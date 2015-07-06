@@ -6,78 +6,93 @@ import ndb
 
 class StatementTest(unittest.TestCase):
     '''
-    Node Locate Unit Test
+    node database statement unit test
     '''
     def setUp(self):  
         self.node = ndb.read('example.ndb')
     
+    def test_exits(self):
+        '''exits test'''
+        result = ndb.execute(self.node, 'exist:root->parent->child->name:jim')
+        self.assertEqual(result, True)
+        
+        result = ndb.execute(self.node, 'exist:root->parent->child->sex:male && name:m$')
+        self.assertEqual(result, True)
+        
+        result = ndb.execute(self.node, 'exist:root->parent->child->sex:female && name:m$')
+        self.assertEqual(result, False)
+    
+    def test_one(self):
+        '''one test'''
+        result = ndb.execute(self.node, 'one:root->parent->child->sex:male')
+        self.assertEqual(result.get('name'), 'jim')
+        self.assertEqual(result.get('age'), '20')
+    
     def test_select(self):
+        '''select test'''
+        result = ndb.execute(self.node, 'select:root->parent->child->name:/.*m/')
+        self.assertEquals(len(result), 2)
+        self.assertEquals(result[0].get('name'), 'jim')
+        self.assertEquals(result[1].get('name'), 'tom')
+
+        result = ndb.execute(self.node, 'select:root->parent->child->age:[15,25]')
+        self.assertEquals(len(result), 2)
+        self.assertEquals(result[0].get('name'), 'jim')
+        self.assertEquals(result[1].get('name'), 'lily')
         
-        result = ndb.execute(self.node, 'select:firewall->interface->name:dmz && ip:192.168.12.2')
-        self.assertEqual(len(result), 1)
-        self.assertEqual(result[0].get('ip'), '192.168.12.2')
+        result = ndb.execute(self.node, 'select:root->parent->child->sex:^fe')
+        self.assertEquals(len(result), 1)
+        self.assertEquals(result[0].get('name'), 'lily')
         
-        result = ndb.execute(self.node, 'select:firewall->interface->name:/dmz|inside/ && ip:/192.168.12.2|192.168.228.122/')
-        self.assertEqual(len(result), 2)
-            
-        result = ndb.execute(self.node, 'select:firewall->interface')
-        self.assertEqual(len(result), 3)
+        result = ndb.execute(self.node, 'select:root->parent->child->name:m$')
+        self.assertEquals(len(result), 2)
+        self.assertEquals(result[0].get('name'), 'jim')
+        self.assertEquals(result[1].get('name'), 'tom')
         
-        result = ndb.execute(self.node, 'select:firewall->interface->mask:255.255.255.0')
-        self.assertEqual(len(result), 3)
+        result = ndb.execute(self.node, 'select:root->parent->child->sex:male && age:[15,25]')
+        self.assertEquals(len(result), 1)
+        self.assertEquals(result[0].get('name'), 'jim')
         
-        result = ndb.execute(self.node, 'select:firewall->access-list->action:/permit|deny/')
-        self.assertEqual(len(result), 11)
-        
-        result = ndb.execute(self.node, 'select:firewall->:/\\S+-list/->action:/permit|deny/')
-        self.assertEqual(len(result), 11)
-        
-        result = ndb.execute(self.node, 'select:firewall->interface->security:[50,100]')
-        self.assertEqual(len(result), 2)
-        
-        result = ndb.execute(self.node, 'select:firewall->:/host|interface/')
-        self.assertEqual(len(result), 4)
-    '''
-    def test_select_list(self):
-        self.node = [{'session': '1', 'hostname': 'H3C', 'version': '3.40', 'time': '2015-03-16-12-01-21', 'memory': '70%', 'cpu': '9%'},
-                     {'session': '1', 'hostname': 'H3C', 'version': '3.40', 'time': '2015-03-16-12-06-23', 'memory': '70%', 'cpu': '10%'},
-                     {'session': '1', 'hostname': 'H3C', 'version': '3.40', 'time': '2015-03-16-12-11-26', 'memory': '70%', 'cpu': '14%'},
-                     {'session': '1', 'hostname': 'H3C', 'version': '3.40', 'time': '2015-03-16-12-16-29', 'memory': '70%', 'cpu': '18%'}]
-        result = ndb.execute(self.node, 'select:cpu')
-        self.assertEqual(len(result), 4)
-        self.assertEqual(result[0], '9%')
-        self.assertEqual(result[3], '18%')
-    '''
+        result = ndb.execute(self.node, 'select:root->parent->child')
+        self.assertEquals(len(result), 3)
+        self.assertEquals(result[0].get('name'), 'jim')
+        self.assertEquals(result[1].get('name'), 'lily')
+        self.assertEquals(result[2].get('name'), 'tom')
+
+        result = ndb.execute(self.node, 'select:root->parent->:/child|nephew/->sex:female')
+        self.assertEquals(len(result), 2)
+        self.assertEquals(result[0].get('name'), 'lucy')
+        self.assertEquals(result[1].get('name'), 'lily')
+
     def test_update(self):
-        
-        result = ndb.execute(self.node, 'update:firewall->interface->name:dmz !! name=dmz2,mask=255.255.255.32')
-        result = ndb.execute(result, 'select:firewall->interface->name:dmz2')
-        self.assertEqual(len(result), 1)
-        self.assertEqual(result[0].get('ip'), '192.168.12.2')
+        ''''update test'''
+        result = ndb.execute(self.node, 'update:root->parent->child->name:jim !! age=21, address=China')
+        result = ndb.execute(result, 'select:root->parent->child->name:jim')
+        self.assertEquals(len(result), 1)
+        self.assertEquals(result[0].get('age'), '21')
+        self.assertEquals(result[0].get('address'), 'China')
+
         
     def test_delete(self):
-        result = ndb.execute(self.node, 'delete:firewall->interface->name:inside !! [mask, security]')
-        result = ndb.execute(result, 'select:firewall->interface->name:inside')
-        self.assertEqual(len(result), 1)
-        self.assertEqual(result[0].get('mask'), None)
-        self.assertEqual(result[0].get('security'), None)
-        
-        result = ndb.execute(self.node, 'delete:firewall->interface->name:outside !! block')
-        result = ndb.execute(result, 'select:firewall->interface->name:outside')
-        self.assertEqual(len(result), 0)
+        '''delete test'''
+        result = ndb.execute(self.node, 'delete:root->parent->child->name:jim !! [sex, age]')
+        result = ndb.execute( result, 'select:root->parent->child->name:jim')
+        self.assertEquals(len(result), 1)
+        self.assertEquals(result[0].get('name'), 'jim')
+        self.assertEquals(result[0].get('sex'), None)
+        self.assertEquals(result[0].get('age'), None)
+
+        result = ndb.execute(self.node, 'delete:root->parent->child->name:jim !! block')
+        result = ndb.execute(result, 'select:root->parent->child->name:jim')
+        self.assertEquals(len(result), 0);
     
     def test_insert(self):
-        result = ndb.execute(self.node, 'insert:firewall->nat !! name=192.168.9.21,ip=192.168.9.21')
-        select_result = ndb.execute(result, 'select:firewall->nat')
-        self.assertEqual(len(select_result), 1)
-        
-        result = ndb.execute(result, 'insert:firewall->nat !! name=192.168.9.22,ip=192.168.9.22')
-        select_result = ndb.execute(result, 'select:firewall->nat')
-        self.assertEqual(len(select_result), 2)
-        
-        result = ndb.execute(result, 'insert:firewall->nat !! name=192.168.9.23,ip=192.168.9.23')
-        select_result = ndb.execute(result, 'select:firewall->nat')
-        self.assertEqual(len(select_result), 3)
+        '''insert test'''
+        result = ndb.execute(self.node, 'insert:root->parent->child !! name=bill, sex=male, age=31')
+        selectResult = ndb.execute(result, 'select:root->parent->child->name:bill')
+        self.assertEquals(len(selectResult), 1)
+        self.assertEquals(selectResult[0].get('sex'), 'male')
+        self.assertEquals(selectResult[0].get('age'), '31')
         
 
 if __name__ == '__main__':
