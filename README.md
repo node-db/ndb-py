@@ -1,6 +1,6 @@
 #ndb-python#
 
-ndb(node database) 是一种轻量级嵌入式的文档型数据库, ndb-python是ndb数据库的python实现 
+ndb(node database) 是一种轻量级嵌入式的文档型数据库, ndb-py是ndb数据库的python实现 
 
 - 可扩展的数据格式（Flexible Data Model）
 - 使用表达式查询语言(Expressive Query Language)
