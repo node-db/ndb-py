@@ -74,8 +74,8 @@ class NodeReader():
             
             else:    
                 if ':' in line:
-                    node_name = line[0: line.find(':')]
-                    item_value = line[line.find(':') + 1: len(line)]
+                    node_name = line[0: line.find(':')].strip()
+                    item_value = line[line.find(':') + 1: len(line)].strip()
                 
                 node_value = node.get(node_name) if node_name != None else None
                 
