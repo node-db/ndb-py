@@ -55,7 +55,8 @@ class Statement:
         result = None
         
         if command != None:
-            if command == 'select' or command == 'one':
+            command = command.lower()
+            if command == 'select' or command == 'one' or command == 'exist':
                 if action != None:
                     result = operate.select(node, path, action)
                 else:
@@ -63,7 +64,13 @@ class Statement:
 
                 if command == 'one':
                     if result != None and type(result) == types.ListType:
-                        result = result[0]
+                        if len(result) > 0:
+                            result = result[0]
+                elif command == 'exist':
+                    if result != None and type(result) == types.ListType and len(result) > 0:
+                        result = True
+                    else:
+                        result = False
             
             elif command == 'update':
                 if action != None:
