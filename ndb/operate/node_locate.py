@@ -1,7 +1,5 @@
 # coding=utf-8
 
-
-
 import types
 import re
 
@@ -100,6 +98,9 @@ class NodeLocate(object):
                             self.do_action(result)
                             
     def _check_value(self, value, exp):
+        if value == None or exp == None:
+            return False
+        
         # regex valueression match
         if len(exp) > 2 and exp.startswith('/') and exp.endswith('/'):
             regex_str = exp[1: len(exp) - 1]
