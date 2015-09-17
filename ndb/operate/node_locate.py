@@ -32,7 +32,7 @@ class NodeLocate(object):
                 query_key = query[0 : query.find('->')].strip()
                 sub_query = query[query.find('->') + 2 : len(query)].strip()  # 2 is '->''s length
 
-            if is_create == True and node.has_key(query_key) == False:
+            if is_create is True and node.has_key(query_key) is False:
                 node[query_key] = {}
             
             if sub_query != query_key or query_key.startswith(':'):
@@ -65,17 +65,17 @@ class NodeLocate(object):
                             
                             value = node.get(key)
                             
-                            if self._check_value(value, exp) == False:
+                            if self._check_value(value, exp) is False:
                                 match_result = False
                     
-                    if match_result == True:
+                    if match_result is True:
                         self.do_action(node)
 
                 else:
                     
                     result = node.get(query_key)
 
-                    if is_create == True:
+                    if is_create is True:
                         
                         if type(result) == types.ListType:
                             item = {}

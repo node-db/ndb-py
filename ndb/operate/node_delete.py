@@ -33,7 +33,7 @@ class NodeDelete(node_locate.NodeLocate):
             self.action(node)
         else:
             if node != None and type(node) == types.DictionaryType:
-                if self.clear == True:
+                if self.clear is True:
                     node.clear()
                 elif self.columns != None and len(self.columns) > 0:
                     for column in self.columns:

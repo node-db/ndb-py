@@ -22,7 +22,7 @@ class NodeFilter:
             return []
         
         _table = []
-        if union == False:
+        if union is False:
             _table = self.filter_and(table, query)
         else:
             _table = self.filter_or(table, query)
@@ -64,7 +64,7 @@ class NodeFilter:
                 else:
                     add_row = False
                         
-            if add_row == True:       
+            if add_row is True:       
                 _table.append(row)
         
         return _table
@@ -97,13 +97,13 @@ class NodeFilter:
                     elif query_type == 'like' and (query_value in row_value):
                         add_row = True
                     
-                    if add_row == True:
+                    if add_row is True:
                         break    
                     
                 else:
                     add_row = False
                 
-            if add_row == True:       
+            if add_row is True:       
                 _table.append(row)
         
         return _table
