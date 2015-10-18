@@ -5,7 +5,7 @@ class NodeFilter:
     #节点过滤：从ndb中进行数据过滤
     '''
     
-    def filte(self, table, query=None, union=False, sort_key=None):
+    def filte(self, table, query = None, union = False, sort_key = None):
         '''
         List过滤
         
@@ -21,20 +21,20 @@ class NodeFilter:
         if table == None:
             return []
         
-        _table = []
+        result = []
         if union is False:
-            _table = self.filter_and(table, query)
+            result = self.filter_and(table, query)
         else:
-            _table = self.filter_or(table, query)
+            result = self.filter_or(table, query)
             
-        #列表排序
+        # 列表排序
         if sort_key != None:
             try:
-                _table = sorted(_table, key=lambda row: row.get(sort_key))
+                result = sorted(result, key = lambda row: row.get(sort_key))
             except:
                 pass
                 
-        return _table
+        return result
     
     '''
     #条件间取与，query中全部条件满足，就加入列表
@@ -73,7 +73,7 @@ class NodeFilter:
     #条件间取或，query中任意条件满足，就加入列表
     '''
     def filter_or(self, table, query):
-        _table = []
+        result = []
         
         for row in table:
             add_row = False
@@ -83,10 +83,7 @@ class NodeFilter:
                 query_type = value.get('type')
                 query_value = value.get('value')
                 
-                if value == None:
-                    add_row = True
-                    continue
-                if query_value == None or query_value == '':
+                if value == None or query_value == None or query_value == '':
                     add_row = True
                     continue
                 
@@ -104,6 +101,6 @@ class NodeFilter:
                     add_row = False
                 
             if add_row is True:       
-                _table.append(row)
+                result.append(row)
         
-        return _table
+        return result
