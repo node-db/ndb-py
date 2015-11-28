@@ -17,6 +17,6 @@ class NodeRedirect():
             ndb = {'result' : ndb}
         
         if str(target).upper() == 'PRINT':
-            writer.print_node(None, ndb);
+            print writer.print_node(None, ndb);
         else:
             writer.write_node(target, None, ndb)
