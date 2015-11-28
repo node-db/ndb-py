@@ -1,8 +1,9 @@
 # coding=utf-8
 
+import os
+
 import unittest
 import ndb
-
 
 class StatementTest(unittest.TestCase):
     '''
@@ -89,11 +90,40 @@ class StatementTest(unittest.TestCase):
     def test_insert(self):
         '''insert test'''
         result = ndb.execute(self.node, 'insert:root->parent->child !! name=bill, sex=male, age=31')
-        selectResult = ndb.execute(result, 'select:root->parent->child->name:bill')
-        self.assertEquals(len(selectResult), 1)
-        self.assertEquals(selectResult[0].get('sex'), 'male')
-        self.assertEquals(selectResult[0].get('age'), '31')
+        select_result = ndb.execute(result, 'select:root->parent->child->name:bill')
+        self.assertEquals(len(select_result), 1)
+        self.assertEquals(select_result[0].get('sex'), 'male')
+        self.assertEquals(select_result[0].get('age'), '31')
         
+    
+    def test_redirect(self):
+        '''redirect test'''
+        ndb.execute(self.node, 'select:root->parent->:/child|nephew/->sex:female >> select.ndb')
+        node = ndb.read('select.ndb')
+        select_result = ndb.execute(node, 'select:result->sex:female')
+        self.assertEquals(len(select_result), 2)
+        self.assertEquals(select_result[0].get('name'), 'lucy')
+        self.assertEquals(select_result[1].get('name'), 'lily')
+        
+        ndb.execute(self.node, 'insert:root->parent->child !! name=bill, sex=male, age=31 >> insert.ndb')
+        node = ndb.read('insert.ndb')
+        select_result = ndb.execute(node, 'select:root->parent->child->name:bill')
+        self.assertEquals(len(select_result), 1)
+        self.assertEquals(select_result[0].get('name'), 'bill')
+        self.assertEquals(select_result[0].get('sex'), "male")
+        self.assertEquals(select_result[0].get('age'), "31")
+            
+        ndb.execute(self.node, 'update:root->parent->child->name:jim !! age=21, address=China >> update.ndb')
+        node = ndb.read('update.ndb')
+        select_result = ndb.execute(node, 'select:root->parent->child->name:jim')
+        self.assertEquals(len(select_result), 1)
+        self.assertEquals(select_result[0].get('name'), 'jim')
+        self.assertEquals(select_result[0].get('address'), "China")
+        self.assertEquals(select_result[0].get('age'), "21")
+        
+        files = ['select.ndb', 'insert.ndb', 'update.ndb']
+        for filename in files:
+            os.remove(filename)
 
 if __name__ == '__main__':
     # import sys;sys.argv = ['', 'Test.testName']

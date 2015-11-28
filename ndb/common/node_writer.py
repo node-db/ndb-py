@@ -22,8 +22,13 @@ class NodeWriter():
         
         @return: 节点数据字符串
         '''
+        if type(node) != types.DictionaryType:
+            raise 'Node is NOT DictionaryType'
+        
         result = []
-        result.append(node_name + '{\n')
+        if node_name != None and node_name != '':  
+            result.append(node_name + '{\n')
+            
         for key in node.keys():
             value = node[key]
             if type(value) == types.ListType and len(value) != 0:
@@ -34,15 +39,17 @@ class NodeWriter():
                         result.append(key + ':' + item + '\n')
                         
             if type(value) == types.DictionaryType and len(value.keys()) != 0:
-                result.append(self.print_node(key, value))
+                result.append(self.print_node(str(key), value))
                 
             if (type(value) == types.StringType or type(value) == types.UnicodeType) and value != '':
                 result.append(key + ':' + value + '\n')
                 
             if type(value) == types.IntType or type(value) == types.LongType or type(value) == types.BooleanType:
                 result.append(key + ':' + str(value) + '\n')
+        
+        if node_name != None and node_name != '':
+            result.append('}\n')
             
-        result.append('}\n')
         return ''.join(result)
 
 

@@ -7,6 +7,7 @@
 
 import types
 import operate
+from common import node_redirect
 
 class Statement:
     '''
@@ -33,7 +34,7 @@ class Statement:
             command = query[0 : query.find(':')].strip()
             query = query[query.find(':') + 1 : len(query)].strip()
         
-        query_items = query.split('!!');
+        query_items = query.split('!!')
         
         if query_items != None and len(query_items) > 0:
             
@@ -43,14 +44,23 @@ class Statement:
             if len(query_items) > 1:
                 value = query_items[1].strip()
 
-            if action != None:
-                return self.__execute(node, command, path, None, action)
-            else:
-                return self.__execute(node, command, path, value, None)
+            redirect = None
+            if '>>' in path:
+                _path = path.split('>>')
+                if _path != None and len(_path) == 2:
+                    path = _path[0].strip()
+                    redirect = _path[1].strip()
+            elif '>>' in value:
+                _value = value.split('>>')
+                if _value != None and len(_value) == 2:
+                    value = _value[0].strip()
+                    redirect = _value[1].strip()
+            
+            return self.__execute(node, command, path, value, action, redirect)
 
         return None
 
-    def __execute(self, node, command, path, value, action):
+    def __execute(self, node, command, path, value, action, redirect):
 
         result = None
         
@@ -89,4 +99,8 @@ class Statement:
                     result = operate.insert(node, path, value, action)
                 else:
                     result = operate.insert(node, path, value)
+            
+            if redirect != None and redirect != '' and str(redirect).upper() != 'NULL':
+                node_redirect.NodeRedirect().redirect(redirect, result)
+                
         return result;
