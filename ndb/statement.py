@@ -100,6 +100,9 @@ class Statement:
                 else:
                     result = operate.insert(node, path, value)
             
+            elif command == 'script':
+                result = operate.script(node, path)
+            
             if redirect != None and redirect != '' and str(redirect).upper() != 'NULL':
                 node_redirect.NodeRedirect().redirect(redirect, result)
                 

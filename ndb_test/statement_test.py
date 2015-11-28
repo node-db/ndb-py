@@ -121,9 +121,32 @@ class StatementTest(unittest.TestCase):
         self.assertEquals(select_result[0].get('address'), "China")
         self.assertEquals(select_result[0].get('age'), "21")
         
+        # delete temp file
         files = ['select.ndb', 'insert.ndb', 'update.ndb']
         for filename in files:
             os.remove(filename)
+    
+    def test_script(self):
+        '''script test'''
+        result = ndb.execute(self.node, "script:example.script")
+        
+        select_result = ndb.execute(result, 'select:root->parent->child->name:bill')
+        self.assertEquals(len(select_result), 1)
+        self.assertEquals(select_result[0].get('name'), 'bill')
+        self.assertEquals(select_result[0].get('sex'), "male")
+        self.assertEquals(select_result[0].get('age'), "31")
+        
+        select_result = ndb.execute(result, 'select:root->parent->child->name:lily')
+        self.assertEquals(len(select_result), 1)
+        self.assertEquals(select_result[0].get('name'), 'lily')
+        self.assertEquals(select_result[0].get('address'), 'China')
+        self.assertEquals(select_result[0].get('age'), '21')
+        
+        select_result = ndb.execute(result, 'select:root->parent->child->name:jim')
+        self.assertEquals(len(select_result), 1)
+        self.assertEquals(select_result[0].get('name'), 'jim')
+        self.assertEquals(select_result[0].get('sex'), None)
+        self.assertEquals(select_result[0].get('age'), None)
 
 if __name__ == '__main__':
     # import sys;sys.argv = ['', 'Test.testName']

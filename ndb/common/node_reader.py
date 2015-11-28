@@ -19,10 +19,10 @@ class NodeReader():
         @return: 载入的ndb对象(Dictionary Object)
         '''
         try:
-            _list = [line for line in open(filename, 'r').readlines()]
+            content = [line for line in open(filename, 'r').readlines()]
         except:
-            _list = []
-        return self.__parse(_list)
+            content = []
+        return self.__parse(content)
     
 
     def read_string(self, data):
@@ -33,22 +33,22 @@ class NodeReader():
         @return: 载入的ndb对象(Dictionary Object)
         '''
         try:
-            _list = data.split('\n')
+            content = data.split('\n')
         except:
-            _list = []
-        return self.__parse(_list)
+            content = []
+        return self.__parse(content)
     
 
-    def __parse(self, _list):
+    def __parse(self, content):
         '''
         #解析Dictionary对象
         '''
         node = {}
 
-        while self.linenum < len(_list):
+        while self.linenum < len(content):
             
             try:
-                line = _list[self.linenum].strip()
+                line = content[self.linenum].strip()
         
                 self.linenum = self.linenum + 1
                 
@@ -59,7 +59,7 @@ class NodeReader():
                 # 如果行中含有'{' 则将下面的内容进行递归
                 if line.endswith('{'):
                     node_name = line[0: line.find('{')].strip()
-                    node_value = self.__parse(_list)
+                    node_value = self.__parse(content)
                     sub_node = node.get(node_name)
                     
                     if sub_node == None:
