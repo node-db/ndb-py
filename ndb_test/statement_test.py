@@ -147,6 +147,11 @@ class StatementTest(unittest.TestCase):
         self.assertEquals(select_result[0].get('name'), 'jim')
         self.assertEquals(select_result[0].get('sex'), None)
         self.assertEquals(select_result[0].get('age'), None)
+    
+    def test_print_node(self):
+        '''node print test'''
+        result = ndb.print_node(None, self.node)
+        print result
 
 if __name__ == '__main__':
     # import sys;sys.argv = ['', 'Test.testName']
