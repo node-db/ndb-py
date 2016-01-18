@@ -23,6 +23,3 @@ def print_xml(name, node, indent_flag = '\t'):
 
 def execute(node, query, action = None):
     return statement.Statement().execute(node, query, action)
-
-def filter_list(table, query=None, union=False, sort_key=None):
-    return operate.filte(table, query, union, sort_key)
