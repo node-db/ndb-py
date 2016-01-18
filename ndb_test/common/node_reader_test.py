@@ -10,8 +10,8 @@ class NodeReaderTest(unittest.TestCase):
     '''
 
     def test_read(self):
-        ndb = ndb.read('../../resource/example_1.txt')
-        print ndb
+        data = ndb.read('../example.ndb')
+        self.assertIsNotNone(data.get('root'))
         
 if __name__ == '__main__':
     # import sys;sys.argv = ['', 'Test.testName']
