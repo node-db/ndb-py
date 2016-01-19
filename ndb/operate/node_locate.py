@@ -135,14 +135,14 @@ class NodeLocate(object):
     
     
     def _convert_value_map(self, update_value):
-        update_value_map = {}
+        value_map = {}
         values = update_value.split(',')
         for value in values:
             value_pair = value.split('=')
             if len(value_pair) == 2:
-                update_value_map[value_pair[0].strip()] = value_pair[1].strip()
+                value_map[value_pair[0].strip()] = value_pair[1].strip()
         
-        return update_value_map
+        return value_map
     
     '''
     #判断字符串是否与正则表达式匹配
