@@ -16,7 +16,6 @@ class NodeDeleteTest(unittest.TestCase):
     def test_delete_block(self):
         result = operate.delete(self.node, 'root->group-1->age:[11,16]', 'block')
         select_result = operate.select(result, 'root->group-1')
-        select_result = operate.clean(select_result)
         self.assertEqual(len(select_result), 2)
     
     def test_delete_column(self):   

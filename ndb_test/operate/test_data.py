@@ -1,4 +1,4 @@
- # coding=utf-8
+# coding=utf-8
 node = {}
 node['root'] = {'group-1':[
                             {'id':'1', 'name':'john', 'age': '21', 'sex':'male'},

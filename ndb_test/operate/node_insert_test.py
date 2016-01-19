@@ -5,7 +5,7 @@ import unittest
 import test_data
 from ndb import operate
 
-class NodeDeleteTest(unittest.TestCase):
+class NodeInsertTest(unittest.TestCase):
     
     '''
     Node Delete Unit Test

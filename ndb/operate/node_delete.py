@@ -3,6 +3,7 @@
 
 import types
 
+import node_clean
 import node_locate
 
 class NodeDelete(node_locate.NodeLocate):
@@ -26,7 +27,7 @@ class NodeDelete(node_locate.NodeLocate):
         
         super(NodeDelete, self).locate(node, path);
         
-        return node
+        return node_clean.NodeClean().clean(node)
     
     def do_action(self, node):
         if self.action != None:

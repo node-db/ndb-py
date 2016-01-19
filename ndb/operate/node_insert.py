@@ -13,8 +13,6 @@ class NodeInsert(node_locate.NodeLocate):
     '''
     def __init__(self):
         self.insert_value = None
-        self.columns = []
-        self.clear = False
     
     def insert(self, node, path, value, action):
         if type(value) == types.StringType or type(value) == types.UnicodeType:
