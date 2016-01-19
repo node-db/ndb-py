@@ -12,10 +12,8 @@ with open('README.md', 'r', 'utf-8') as fp:
 packages = ['ndb']
 
 classifiers = [
+               'Development Status :: 5 - Production/Stable',
                'Intended Audience :: Developers',
-               'Development Status :: 4 - Beta',
-               'Intended Audience :: Developers',
-               'Natural Language :: English',
                'License :: OSI Approved :: Apache Software License',
                'Programming Language :: Python',
                'Programming Language :: Python :: 2.6',
@@ -29,9 +27,9 @@ setup(
       version = ndb.__version__,
       author = 'Yugeng Hui',
       author_email = 'interhuiyg@163.com',
-      url = 'https://github.com/pinaeos/ndb-py',
+      url = 'https://github.com/node-db/ndb-py',
       packages = packages,
-      description = 'node database tools for python',
+      description = 'Node Database for python',
       long_description = long_description,
       license = 'Apache 2.0',
       classifiers = classifiers

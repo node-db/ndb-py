@@ -6,7 +6,7 @@ ndb(node database) 是一种轻量级嵌入式的文档型数据库, ndb-py是nd
 - 使用表达式查询语言(Expressive Query Language)
 - 采用程序嵌入的方式（Embedded Program）
 
-下载路径：ndb-1.1.zip
+下载路径：ndb-1.1.tar.gz
 
 ## ndb语法规则 ##
 
@@ -77,7 +77,6 @@ item : value用于检索对应的node，根据后面的值对节点中的数据�
 				sex: female
 			}
     	}
-		
     }
 
 
@@ -145,7 +144,7 @@ item : value用于检索对应的node，根据后面的值对节点中的数据�
 	
 	self.node = ndb.read('example.ndb')
 	reslt = ndb.execute(self.node, 'select:root->parent->child->name:/.*m/')
-	print(result[0].get('name')) #Output jim
-	print(result[1].get('name')) #Output tom
+	print("First Record : " + result[0].get('name') + '\n')
+	print("Second Record : " + result[1].get('name') + '\n')
 
 

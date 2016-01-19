@@ -1,0 +1,4 @@
+graft ndb
+graft ndb_test
+include *.md *.rst *.cfg
+global-exclude *.pyc
