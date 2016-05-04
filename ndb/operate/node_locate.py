@@ -5,13 +5,13 @@ import re
 
 class NodeLocate(object):
     '''
-    #节点定位
+    #节点定位, 根据表达式定位数据的位置, 参考XPath设计
     '''
 
     def locate(self, node, query, is_create=False):
         '''
         #使用查询表达式对节点位置进行定位
-        #节点格式为：A->B->C:value 
+        #节点格式为: A->B->C:value 
          
         @param query: 查询表达式
         @param node: ndb节点
@@ -150,7 +150,7 @@ class NodeLocate(object):
     @param regex: 正则表达式
     @param line: 需要匹配的字符串
     
-    @return: 匹配的结果，True 匹配 False 不匹配
+    @return: 匹配的结果, True 匹配 False 不匹配
     '''    
     def _check_line(self, regex, line):
         pattern = re.compile(regex)

@@ -4,6 +4,9 @@ import types
 import ndb
 
 class NodeScript():
+    '''
+    #执行ndb脚本, 在ndb脚本中执行多条ndb语句
+    '''
     
     def __init__(self):
         pass

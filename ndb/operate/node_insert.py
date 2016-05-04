@@ -8,8 +8,8 @@ import node_locate
 
 class NodeInsert(node_locate.NodeLocate):
     '''
-    #节点插入：向ndb中插入数据
-    #当遇到路径中没有的节点时，主动建立路径节点，并在末尾节点插入数据
+    #节点插入: 向ndb中插入数据
+    #当遇到路径中没有的节点时, 主动建立路径节点, 并在末尾节点插入数据
     '''
     def __init__(self):
         self.insert_value = None

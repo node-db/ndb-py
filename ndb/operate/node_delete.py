@@ -8,7 +8,7 @@ import node_locate
 
 class NodeDelete(node_locate.NodeLocate):
     '''
-    #节点删除：从ndb中删除某个指定节点
+    #节点删除: 从ndb中删除某个指定节点
     #删除时可以指定删除指定的条目或者整块内容删除
     '''
     

@@ -3,6 +3,9 @@
 import types
 
 class NodeTravel():
+    '''
+    #遍历整个ndb对象, 并针对每一个ndb节点执行action的方法
+    '''
     
     def __init__(self):
         pass

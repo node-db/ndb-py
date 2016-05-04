@@ -29,6 +29,7 @@ class NodeClean():
                 if cleaned_value != None and len(cleaned_value) > 0:
                     result[key] = cleaned_value
         else:
-            result = node
+            if node != None:
+                result = node
             
         return result

@@ -7,8 +7,8 @@ import node_locate
 
 class NodeUpdate(node_locate.NodeLocate):
     '''
-    #节点修改：修改ndb中的数据
-    #查询条件使用ndb路径查询，并更新查询路径上的数据
+    #节点修改: 修改ndb中的数据
+    #查询条件使用ndb路径查询, 并更新查询路径上的数据
     '''    
     def __init__(self):
         self.update_value = None
